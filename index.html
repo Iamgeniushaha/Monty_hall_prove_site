@@ -6,68 +6,106 @@
     <script src="index.js"></script>
     <script>
         function printName()  {
-            const name = document.getElementById('name').value;
-            montyHallSimulation(name);
-        }
-        
-        function montyHallSimulation(trials) {
-            let switchWins = 0;
-            let stayWins = 0;
-        
-            for (let i = 0; i < trials; i++) {
-              // 자동차가 있는 문 (0, 1, 2 중 하나)
-              const carDoor = Math.floor(Math.random() * 3);
-        
-              // 참가자가 처음 선택한 문 (0, 1, 2 중 하나)
-              const initialChoice = Math.floor(Math.random() * 3);
-        
-              // 몬티가 연 문 (참가자가 선택한 문이 아니며 자동차가 없는 문)
-            let openDoor;
-            do {
-                openDoor = Math.floor(Math.random() * 3);
-            } while (openDoor === carDoor || openDoor === initialChoice);
-        
-              // 참가자가 문을 바꾸는 경우
-            const switchChoice = [0, 1, 2].find(door => door !== initialChoice && door !== openDoor);
-        
-              // 참가자가 문을 바꾸지 않는 경우
-            const stayChoice = initialChoice;
-        
-              // 문을 바꾼 경우 승리 여부
-            if (switchChoice === carDoor) {
-                switchWins++;
+    const num = document.getElementById('name').value;
+    montyHallSimulation(num);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const num = button.textContent;
+            montyHallSimulation(num)
+        });
+    });
+});
+count =0
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.reset');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            for(let i = 1; i<13;i++){
+            document.getElementById(`log${i}`).innerText = `기록 없음`;
+            count = 0;
             }
-        
-              // 문을 바꾸지 않은 경우 승리 여부
-            if (stayChoice === carDoor) {
-                stayWins++;
-            }
-            }
-        
-            // 결과 출력
-            document.getElementById("stay").innerText = switchWins;
-            document.getElementById("change").innerText = stayWins;
-            document.getElementById("staypercent").innerText =`(${(switchWins / trials * 100).toFixed(2)}%)`;
-            document.getElementById("changepercent").innerText = (stayWins / trials * 100).toFixed(2);
-        
-            console.log(`Trials: ${trials}`);
-            console.log(`Switch Wins: ${switchWins} (${(switchWins / trials * 100).toFixed(2)}%)`);
-            console.log(`Stay Wins: ${stayWins} (${(stayWins / trials * 100).toFixed(2)}%)`);
-        }
-        
-        </script>
+        });
+    });
+});
+
+
+function montyHallSimulation(trials) {
+    let switchWins = 0;
+    let stayWins = 0;
+
+    for (let i = 0; i < trials; i++) {
+      const carDoor = Math.floor(Math.random() * 3);
+
+      const initialChoice = Math.floor(Math.random() * 3);
+
+    let openDoor;
+    do {
+        openDoor = Math.floor(Math.random() * 3);
+    } while (openDoor === carDoor || openDoor === initialChoice);
+
+    const switchChoice = [0, 1, 2].find(door => door !== initialChoice && door !== openDoor);
+
+    const stayChoice = initialChoice;
+
+    if (switchChoice === carDoor) {
+        switchWins++;
+    }
+
+    if (stayChoice === carDoor) {
+        stayWins++;
+    }
+    }
+    count = count + 1;
+    document.getElementById("stay").innerText = `바꾸었을때의 경우의 수 : ${switchWins}`;
+    document.getElementById("change").innerText = `바꾸지 않았을때의 경우의 수 : ${stayWins}`;
+    document.getElementById("staypercent").innerText =`바꾸었을 때의 경우의 수 : ${(switchWins / trials * 100).toFixed(2)}%`;
+    document.getElementById("changepercent").innerText = `바꾸지 않았을때의 경우의 수 : ${(stayWins / trials * 100).toFixed(2)}%`;
+    if(count === 13){
+        count = 1
+    }
+    console.log(`log${count}`)
+    document.getElementById(`log${count}`).innerText = `${count}번째 기록 : ${(switchWins / trials * 100).toFixed(2)}%(12번의 기록 이후에 초기화 됩니다)`
+    console.log(`Trials: ${trials}`);
+    console.log(`Switch Wins: ${switchWins} (${(switchWins / trials * 100).toFixed(2)}%)`);
+    console.log(`Stay Wins: ${stayWins} (${(stayWins / trials * 100).toFixed(2)}%`);
+}
+
+
+    </script>
     <title>Document</title>
 </head>
 <body>
     <input id='name' onchange='printName()'/>
-    <div>바꾸지 않았을때의 경우의 수 : </div>
-    <div id='stay'></div>
-    <div>바꾸었을때의 경우의 수</div>
-    <div id="change"></div>
+    <button class="btn">1</button>
+    <button class="btn">10</button>
+    <button class="btn">100</button>
+    <button class="btn">1000</button>
+    <button class="btn">10000</button>
+    <button class="btn">100000</button>
+    <button class="btn">1000000</button>
+    <button class="reset">reset</button>
+    
+    <div id='stay'>바꾸었을 때의 경우의 수</div>
+    <div id="change">바꾸지 않았을 때의 경우의 수</div>
+    <div id='staypercent'>바꾸었을 때의 경우의 수</div>
+    <div id="changepercent">바꾸지 않았을 때의 경우의 수</div>
 
-    <div>바꾸지 않았을때의 확률 : </div>
-    <div id='staypercent'></div>
-    <div>바꾸었을때의 확률</div>
-    <div id="changepercent"></div>
+    <div id="log1">기록 없음</div>
+    <div id="log2">기록 없음</div>
+    <div id="log3">기록 없음</div>
+    <div id="log4">기록 없음</div>
+    <div id="log5">기록 없음</div>
+    <div id="log6">기록 없음</div>
+    <div id="log7">기록 없음</div>
+    <div id="log8">기록 없음</div>
+    <div id="log9">기록 없음</div>
+    <div id="log10">기록 없음</div>
+    <div id="log11">기록 없음</div>
+    <div id="log12">기록 없음</div>
+
 </body>
 </html>
