@@ -4,56 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="index.js"></script>
-  <script>
-function printName()  {
-    const name = document.getElementById('name').value;
-    montyHallSimulation(name);
-}
-
-function montyHallSimulation(trials) {
-    let switchWins = 0;
-    let stayWins = 0;
-
-    for (let i = 0; i < trials; i++) {
-      // 자동차가 있는 문 (0, 1, 2 중 하나)
-      const carDoor = Math.floor(Math.random() * 3);
-
-      // 참가자가 처음 선택한 문 (0, 1, 2 중 하나)
-      const initialChoice = Math.floor(Math.random() * 3);
-
-      // 몬티가 연 문 (참가자가 선택한 문이 아니며 자동차가 없는 문)
-    let openDoor;
-    do {
-        openDoor = Math.floor(Math.random() * 3);
-    } while (openDoor === carDoor || openDoor === initialChoice);
-
-      // 참가자가 문을 바꾸는 경우
-    const switchChoice = [0, 1, 2].find(door => door !== initialChoice && door !== openDoor);
-
-      // 참가자가 문을 바꾸지 않는 경우
-    const stayChoice = initialChoice;
-
-      // 문을 바꾼 경우 승리 여부
-    if (switchChoice === carDoor) {
-        switchWins++;
-    }
-
-      // 문을 바꾸지 않은 경우 승리 여부
-    if (stayChoice === carDoor) {
-        stayWins++;
-    }
-    }
-
-    // 결과 출력
-    document.getElementById("stay").innerText = switchWins;
-    document.getElementById("change").innerText = stayWins;
-
-    console.log(`Trials: ${trials}`);
-    console.log(`Switch Wins: ${switchWins} (${(switchWins / trials * 100).toFixed(2)}%)`);
-    console.log(`Stay Wins: ${stayWins} (${(stayWins / trials * 100).toFixed(2)}%)`);
-}
-
-</script>
+    <script>
+        function printName()  {
+            const name = document.getElementById('name').value;
+            montyHallSimulation(name);
+        }
+        
+        function montyHallSimulation(trials) {
+            let switchWins = 0;
+            let stayWins = 0;
+        
+            for (let i = 0; i < trials; i++) {
+              // 자동차가 있는 문 (0, 1, 2 중 하나)
+              const carDoor = Math.floor(Math.random() * 3);
+        
+              // 참가자가 처음 선택한 문 (0, 1, 2 중 하나)
+              const initialChoice = Math.floor(Math.random() * 3);
+        
+              // 몬티가 연 문 (참가자가 선택한 문이 아니며 자동차가 없는 문)
+            let openDoor;
+            do {
+                openDoor = Math.floor(Math.random() * 3);
+            } while (openDoor === carDoor || openDoor === initialChoice);
+        
+              // 참가자가 문을 바꾸는 경우
+            const switchChoice = [0, 1, 2].find(door => door !== initialChoice && door !== openDoor);
+        
+              // 참가자가 문을 바꾸지 않는 경우
+            const stayChoice = initialChoice;
+        
+              // 문을 바꾼 경우 승리 여부
+            if (switchChoice === carDoor) {
+                switchWins++;
+            }
+        
+              // 문을 바꾸지 않은 경우 승리 여부
+            if (stayChoice === carDoor) {
+                stayWins++;
+            }
+            }
+        
+            // 결과 출력
+            document.getElementById("stay").innerText = switchWins;
+            document.getElementById("change").innerText = stayWins;
+            document.getElementById("staypercent").innerText =`(${(switchWins / trials * 100).toFixed(2)}%)`;
+            document.getElementById("changepercent").innerText = (stayWins / trials * 100).toFixed(2);
+        
+            console.log(`Trials: ${trials}`);
+            console.log(`Switch Wins: ${switchWins} (${(switchWins / trials * 100).toFixed(2)}%)`);
+            console.log(`Stay Wins: ${stayWins} (${(stayWins / trials * 100).toFixed(2)}%)`);
+        }
+        
+        </script>
     <title>Document</title>
 </head>
 <body>
@@ -62,5 +64,10 @@ function montyHallSimulation(trials) {
     <div id='stay'></div>
     <div>바꾸었을때의 경우의 수</div>
     <div id="change"></div>
+
+    <div>바꾸지 않았을때의 확률 : </div>
+    <div id='staypercent'></div>
+    <div>바꾸었을때의 확률</div>
+    <div id="changepercent"></div>
 </body>
 </html>
